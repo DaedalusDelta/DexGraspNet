@@ -1,0 +1,6 @@
+Not connected to PVD
++++ Using GPU PhysX
+Physics Engine: PhysX
+Physics Device: cuda:0
+GPU Pipeline: disabled
+JointSpec type free not yet supported!

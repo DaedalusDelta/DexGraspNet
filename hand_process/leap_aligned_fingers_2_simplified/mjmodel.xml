@@ -1,0 +1,316 @@
+<mujoco model="leapv2">
+  <!-- We are sharing this from the shadow hand example environment -->
+
+  <compiler angle="radian" coordinate="local" meshdir="/home/mli/DexGraspNet/hand_process/leap_aligned_fingers_2_simplified"/>
+  <option timestep="0.002" iterations="20" apirate="200">
+      <flag warmstart="enable"></flag>
+    </option>  
+  <size njmax="500" nconmax="100" nuser_jnt="1" nuser_site="1" nuser_tendon="1" nuser_sensor="1" nuser_actuator="16" nstack="600000"></size>
+
+  <default>
+      <default class="robot0:asset_class">
+          <geom friction="1 0.005 0.001" condim="3" margin="0.0005" contype="1" conaffinity="0"></geom>
+          <joint limited="true" damping="0.1" armature="0.001" margin="0.01" frictionloss="0.001"></joint>
+          <site size="0.005" rgba="0.4 0.9 0.4 1"></site>
+          <general ctrllimited="true" forcelimited="true"></general>
+      </default>
+      <default class="robot0:D_Touch">
+          <site type="box" size="0.009 0.004 0.013" pos="0 -0.004 0.018" rgba="0.8 0.8 0.8 0.15" group="4"></site>
+      </default>
+      <default class="robot0:DC_Hand">
+          <geom material="robot0:MatColl" contype="1" conaffinity="0" group="4"></geom>
+      </default>
+      <default class="robot0:D_Vizual">
+          <geom contype="0" conaffinity="0" group="1" type="mesh"></geom>
+      </default>
+  </default>
+
+  <contact>
+    <!-- Between 4 Finger Neighbor Contacts -->
+    <pair geom1="g_index_proximal" geom2="g_middle_base" condim="1"></pair>
+    <pair geom1="g_index_base" geom2="g_middle_proximal" condim="1"></pair>
+    <pair geom1="g_index_proximal" geom2="g_middle_proximal" condim="1"></pair>
+
+    <pair geom1="g_index_mediate" geom2="g_middle_mediate" condim="1"></pair>
+    <pair geom1="g_index_mediate" geom2="g_middle_proximal" condim="1"></pair>
+    <pair geom1="g_index_proximal" geom2="g_middle_mediate" condim="1"></pair>
+
+    <pair geom1="g_index_distal" geom2="g_middle_mediate" condim="1"></pair>
+    <pair geom1="g_index_distal" geom2="g_middle_distal" condim="1"></pair>
+    <pair geom1="g_index_mediate" geom2="g_middle_distal" condim="1"></pair>
+
+    <pair geom1="g_index_proximal" geom2="g_middle_distal" condim="1"></pair>
+    <pair geom1="g_index_distal" geom2="g_middle_proximal" condim="1"></pair> 
+
+    <pair geom1="g_ring_proximal" geom2="g_pinky_base" condim="1"></pair>
+    <pair geom1="g_ring_base" geom2="g_pinky_proximal" condim="1"></pair>
+    <pair geom1="g_ring_proximal" geom2="g_pinky_proximal" condim="1"></pair>
+
+   <pair geom1="g_ring_mediate" geom2="g_pinky_mediate" condim="1"></pair>
+    <pair geom1="g_ring_mediate" geom2="g_pinky_proximal" condim="1"></pair>
+    <pair geom1="g_ring_proximal" geom2="g_pinky_mediate" condim="1"></pair>
+
+    <pair geom1="g_ring_distal" geom2="g_pinky_mediate" condim="1"></pair>
+    <pair geom1="g_ring_distal" geom2="g_pinky_distal" condim="1"></pair>
+    <pair geom1="g_ring_mediate" geom2="g_pinky_distal" condim="1"></pair>
+
+    <pair geom1="g_ring_proximal" geom2="g_pinky_distal" condim="1"></pair>
+    <pair geom1="g_ring_distal" geom2="g_pinky_proximal" condim="1"></pair>
+
+
+    <!-- Between 4 Fingers index to ring and middle to pinky -->
+    <pair geom1="g_index_proximal" geom2="g_ring_distal" condim="1"></pair>
+    <pair geom1="g_index_distal" geom2="g_ring_proximal" condim="1"></pair>
+
+    <pair geom1="g_ring_proximal" geom2="g_pinky_distal" condim="1"></pair>
+    <pair geom1="g_ring_distal" geom2="g_pinky_proximal" condim="1"></pair>
+
+    <!-- 5 Finger tips and thumb base to Palm-->
+    <pair geom1="g_index_distal" geom2="g_no_finger_frame" condim="1"></pair>
+    <pair geom1="g_middle_distal" geom2="g_no_finger_frame" condim="1"></pair>
+    <pair geom1="g_ring_distal" geom2="g_no_finger_frame" condim="1"></pair>
+    <pair geom1="g_pinky_distal" geom2="g_no_finger_frame" condim="1"></pair>
+    
+    <pair geom1="g_index_mediate" geom2="g_no_finger_frame" condim="1"></pair>
+    <pair geom1="g_middle_mediate" geom2="g_no_finger_frame" condim="1"></pair>
+    <pair geom1="g_ring_mediate" geom2="g_no_finger_frame" condim="1"></pair>
+    <pair geom1="g_pinky_mediate" geom2="g_no_finger_frame" condim="1"></pair>
+
+    <pair geom1="g_index_distal" geom2="g_thumb_frame" condim="1"></pair>
+    <pair geom1="g_middle_distal" geom2="g_thumb_frame" condim="1"></pair>
+    <pair geom1="g_ring_distal" geom2="g_thumb_frame" condim="1"></pair>
+    <pair geom1="g_pinky_distal" geom2="g_thumb_frame" condim="1"></pair>
+
+    <pair geom1="g_index_mediate" geom2="g_thumb_frame" condim="1"></pair>
+    <pair geom1="g_middle_mediate" geom2="g_thumb_frame" condim="1"></pair>
+    <pair geom1="g_ring_mediate" geom2="g_thumb_frame" condim="1"></pair>
+    <pair geom1="g_pinky_mediate" geom2="g_thumb_frame" condim="1"></pair>
+
+    <pair geom1="g_index_proximal" geom2="g_thumb_frame" condim="1"></pair>
+    <pair geom1="g_middle_proximal" geom2="g_thumb_frame" condim="1"></pair>
+    <pair geom1="g_ring_proximal" geom2="g_thumb_frame" condim="1"></pair>
+
+    <pair geom1="g_thumb_distal" geom2="g_no_finger_frame" condim="1"></pair>
+    <pair geom1="g_thumb_distal" geom2="g_4_finger_frame" condim="1"></pair>
+
+    <!-- Thumb base and tip to 4 Fingers-->
+    <pair geom1="g_index_distal" geom2="g_thumb_distal" condim="1"></pair>
+    <pair geom1="g_middle_distal" geom2="g_thumb_distal" condim="1"></pair>
+    <pair geom1="g_ring_distal" geom2="g_thumb_distal" condim="1"></pair>
+    <pair geom1="g_pinky_distal" geom2="g_thumb_distal" condim="1"></pair>
+
+    <pair geom1="g_index_mediate" geom2="g_thumb_proximal" condim="1"></pair>
+    <pair geom1="g_middle_mediate" geom2="g_thumb_proximal" condim="1"></pair>
+    <pair geom1="g_ring_mediate" geom2="g_thumb_proximal" condim="1"></pair>
+    <pair geom1="g_pinky_mediate" geom2="g_thumb_proximal" condim="1"></pair>
+
+    <pair geom1="g_index_proximal" geom2="g_thumb_distal" condim="1"></pair>
+    <pair geom1="g_middle_proximal" geom2="g_thumb_distal" condim="1"></pair>
+    <pair geom1="g_ring_proximal" geom2="g_thumb_distal" condim="1"></pair>
+    <pair geom1="g_pinky_proximal" geom2="g_thumb_distal" condim="1"></pair>
+  </contact>
+  <!-- We are sharing this from the shadow hand example environment -->
+
+  <asset>
+   <mesh name="4_finger_frame" file="4_finger_frame.stl"/>
+    <mesh name="axle_4_gear_together_mir" file="axle_4_gear_together_mir.stl"/>
+    <mesh name="finger_v2_with_motor" file="finger_v2_with_motor.stl"/>
+    <mesh name="pip_dip_soft_parts" file="pip_dip_soft_parts.stl"/>
+    <mesh name="dip_tip_soft_upward_cut" file="dip_tip_soft_upward_cut.stl"/>
+    <mesh name="axle_4_gear_together" file="axle_4_gear_together.stl"/>
+    <mesh name="no_finger_frame" file="no_finger_frame.stl"/>
+    <mesh name="thumb_frame" file="thumb_frame.stl"/>
+    <mesh name="thumb_with_motor" file="thumb_with_motor.stl"/>
+    <mesh name="thumb_tip_hard" file="thumb_tip_hard.stl"/>
+    <mesh name="simplified_4_finger_frame" file="simplified_4_finger_frame.stl"/>
+    <mesh name="simplified_axle_4_gear_together_mir" file="simplified_axle_4_gear_together_mir.stl"/>
+    <mesh name="simplified_finger_v2_with_motor" file="simplified_finger_v2_with_motor.stl"/>
+    <mesh name="simplified_pip_dip_soft_parts" file="simplified_pip_dip_soft_parts.stl"/>
+    <mesh name="simplified_dip_tip_soft_upward_cut" file="simplified_dip_tip_soft_upward_cut.stl"/>
+    <mesh name="simplified_axle_4_gear_together" file="simplified_axle_4_gear_together.stl"/>
+    <mesh name="simplified_no_finger_frame" file="simplified_no_finger_frame.stl"/>
+    <mesh name="simplified_thumb_frame" file="simplified_thumb_frame.stl"/>
+    <mesh name="simplified_thumb_with_motor" file="simplified_thumb_with_motor.stl"/>
+    <mesh name="simplified_thumb_tip_hard" file="simplified_thumb_tip_hard.stl"/>
+  </asset>
+
+  <worldbody>
+   <body name = "4_finger_frame" pos = "0 0 0" childclass="robot0:asset_class">
+    <geom class="robot0:DC_Hand" name = "g_4_finger_frame" pos="0.0786839 0.0250834 -0.00397229" type="mesh" rgba="0 0.6 0.7 1" mesh="simplified_4_finger_frame"/>
+    <geom class="robot0:D_Vizual" pos="0.0786839 0.0250834 -0.00397229" type="mesh" rgba="0 0.6 0.7 1"  mesh="4_finger_frame"/>
+    <body name="axle_4_gear_together_mir" pos="-0.0458161 -0.00524278 -0.131822" quat="0.5 -0.5 0.5 -0.5">
+      <inertial pos="0.0268697 0.00822304 0.0108753" quat="0.529617 0.480986 0.518463 0.468353" mass="0.02" diaginertia="2.8958e-07 2.53284e-07 6.82403e-08"/>
+      <joint name="index_mcpf" pos="0 0 0" axis="0 0 1" limited="true" range="0 1.5708"/>
+      <geom class="robot0:DC_Hand" name = "g_index_base" pos="-0.0149766 -0.0131324 -0.0220975" quat="0.585532 -0.585532 -0.396424 -0.396424" type="mesh" rgba="0.498039 0.498039 0.498039 1" mesh="simplified_axle_4_gear_together_mir"/>
+      <geom class="robot0:D_Vizual"  pos="-0.0149766 -0.0131324 -0.0220975" quat="0.585532 -0.585532 -0.396424 -0.396424" type="mesh" rgba="0.498039 0.498039 0.498039 1" mesh="axle_4_gear_together_mir"/>
+      <body name="finger_v2_with_motor"  pos="0.0273528 -0.0192 0.01085" quat="0.5 -0.5 -0.5 -0.5">
+        <inertial pos="2.69799e-06 0.00969179 0.0167244" quat="0.933694 0.358071 -0.000130762 -7.74925e-06" mass="0.045" diaginertia="1.01907e-05 7.29793e-06 5.66945e-06"/>
+        <joint name="index_mcps" pos="0 0 0" axis="0 0 1" limited="true" range="-1.5708 1.5708"/>
+        <geom class="robot0:DC_Hand" name = "g_index_proximal" pos="0.00882103 0.0244405 0.0124337" quat="0.707107 0.707107 0 0" type="mesh" rgba="0.603922 0.14902 0.14902 1" mesh="simplified_finger_v2_with_motor"/>
+        <geom class="robot0:D_Vizual" pos="0.00882103 0.0244405 0.0124337" quat="0.707107 0.707107 0 0" type="mesh" rgba="0.603922 0.14902 0.14902 1" mesh="finger_v2_with_motor"/>
+        <body name="pip_dip_soft_parts" pos="-0.01015 0.0169235 0.0345099" quat="0.00267752 0.707102 0.00267752 0.707102">
+          <inertial pos="-0.00255848 -0.0100331 0.0100999" quat="0.989911 -4.92866e-07 -3.44336e-06 -0.141691" mass="0.01" diaginertia="6.06365e-07 3.6766e-07 3.64034e-07"/>
+          <joint name="index_pip" pos="0 0 0" axis="0 0 1" limited="true" range="0 2.00713"/>
+          <geom class="robot0:DC_Hand" name = "g_index_mediate" pos="-0.0219423 -0.00754842 0.018921" quat="0.5 -0.5 -0.5 -0.5" type="mesh" rgba="0.972549 0.529412 0.00392157 1" mesh="simplified_pip_dip_soft_parts"/>
+          <geom class="robot0:D_Vizual" pos="-0.0219423 -0.00754842 0.018921" quat="0.5 -0.5 -0.5 -0.5" type="mesh" rgba="0.972549 0.529412 0.00392157 1" mesh="pip_dip_soft_parts"/>
+          <body name="dip_tip_soft_upward_cut" pos="-0.00598884 -0.0202033 0.0008">
+            <inertial pos="-0.00469732 -0.0118197 0.00930264" quat="0.699921 0.699494 -0.102142 -0.101911" mass="0.0125" diaginertia="1.23132e-06 9.56841e-07 3.68911e-07"/>
+            <joint name="index_dip" pos="0 0 0" axis="0 0 1" limited="true" range="0 2.00713"/>
+            <geom class="robot0:DC_Hand" name = "g_index_distal" pos="-0.0160787 0.0125384 0.018121" quat="0.5 -0.5 -0.5 -0.5" type="mesh" rgba="0 0.74902 1 1" mesh="simplified_dip_tip_soft_upward_cut"/>
+            <geom class="robot0:D_Vizual" pos="-0.0160787 0.0125384 0.018121" quat="0.5 -0.5 -0.5 -0.5" type="mesh" rgba="0 0.74902 1 1" mesh="dip_tip_soft_upward_cut"/>
+          </body>
+        </body>
+      </body>
+    </body>
+    <body name="axle_4_gear_together_mir_2" pos="-0.0218161 -0.0117428 -0.131822" quat="0.5 -0.5 0.5 -0.5">
+      <inertial pos="0.0268697 0.00822304 0.0108753" quat="0.529617 0.480986 0.518463 0.468353" mass="0.02" diaginertia="2.8958e-07 2.53284e-07 6.82403e-08"/>
+      <joint name="middle_mcpf" pos="0 0 0" axis="0 0 1" limited="true" range="0 1.5708"/>
+      <geom class="robot0:DC_Hand" name = "g_middle_base" pos="-0.0149766 -0.0131324 -0.0220975" quat="0.585532 -0.585532 -0.396424 -0.396424" type="mesh" rgba="0.498039 0.498039 0.498039 1" mesh="simplified_axle_4_gear_together_mir"/>
+      <geom class="robot0:D_Vizual" pos="-0.0149766 -0.0131324 -0.0220975" quat="0.585532 -0.585532 -0.396424 -0.396424" type="mesh" rgba="0.498039 0.498039 0.498039 1" mesh="axle_4_gear_together_mir"/>
+      <body name="finger_v2_with_motor_2" pos="0.0273528 -0.0192 0.01085" quat="0.5 -0.5 -0.5 -0.5">
+        <inertial pos="2.69799e-06 0.00969179 0.0167244" quat="0.933694 0.358071 -0.000130762 -7.74925e-06" mass="0.045" diaginertia="1.01907e-05 7.29793e-06 5.66945e-06"/>
+        <joint name="middle_mcps" pos="0 0 0" axis="0 0 1" limited="true" range="-1.5708 1.5708"/>
+        <geom class="robot0:DC_Hand" name = "g_middle_proximal" pos="0.00882103 0.0244405 0.0124337" quat="0.707107 0.707107 0 0" type="mesh" rgba="0.603922 0.14902 0.14902 1" mesh="simplified_finger_v2_with_motor"/>
+        <geom class="robot0:D_Vizual" pos="0.00882103 0.0244405 0.0124337" quat="0.707107 0.707107 0 0" type="mesh" rgba="0.603922 0.14902 0.14902 1" mesh="finger_v2_with_motor"/>
+        <body name="pip_dip_soft_parts_2" pos="-0.0101 0.0168775 0.0343571" quat="0 0.707107 0 0.707107">
+          <inertial pos="-0.00255848 -0.0100331 0.0100999" quat="0.989911 -4.92866e-07 -3.44336e-06 -0.141691" mass="0.01" diaginertia="6.06365e-07 3.6766e-07 3.64034e-07"/>
+          <joint name="middle_pip" pos="0 0 0" axis="0 0 1" limited="true" range="0 2.00713"/>
+          <geom class="robot0:DC_Hand" name = "g_middle_mediate" pos="-0.0219423 -0.00754842 0.018921" quat="0.5 -0.5 -0.5 -0.5" type="mesh" rgba="0.972549 0.529412 0.00392157 1" mesh="simplified_pip_dip_soft_parts"/>
+          <geom class="robot0:D_Vizual" pos="-0.0219423 -0.00754842 0.018921" quat="0.5 -0.5 -0.5 -0.5" type="mesh" rgba="0.972549 0.529412 0.00392157 1" mesh="pip_dip_soft_parts"/>
+          <body name="dip_tip_soft_upward_cut_2" pos="-0.00598884 -0.0202033 0.0008" quat="1 0 0 0">
+            <inertial pos="-0.00469732 -0.0118197 0.00930264" quat="0.699921 0.699494 -0.102142 -0.101911" mass="0.0125" diaginertia="1.23132e-06 9.56841e-07 3.68911e-07"/>
+            <joint name="middle_dip" pos="0 0 0" axis="0 0 1" limited="true" range="0 2.00713"/>
+            <geom class="robot0:DC_Hand" name = "g_middle_distal" pos="-0.0160787 0.0125384 0.018121" quat="0.5 -0.5 -0.5 -0.5" type="mesh" rgba="0 0.74902 1 1" mesh="simplified_dip_tip_soft_upward_cut"/>
+            <geom class="robot0:D_Vizual" pos="-0.0160787 0.0125384 0.018121" quat="0.5 -0.5 -0.5 -0.5" type="mesh" rgba="0 0.74902 1 1" mesh="dip_tip_soft_upward_cut"/>
+          </body>
+        </body>
+      </body>
+    </body>
+    <body name="axle_4_gear_together" pos="0.0026563 -0.0102428 -0.131822" quat="0.5 -0.5 0.5 -0.5">
+      <inertial pos="0.0268697 0.00822304 0.0108747" quat="0.480986 0.529617 0.468353 0.518463" mass="0.02" diaginertia="2.8958e-07 2.53284e-07 6.82403e-08"/>
+      <joint name="ring_mcpf" pos="0 0 0" axis="0 0 1" limited="true" range="0 1.5708"/>
+      <geom name = "g_ring_base" pos="-0.0145682 -0.011604 -0.0105057" quat="0.707107 -0.707107 0 0" type="mesh" rgba="0.498039 0.498039 0.498039 1" mesh="simplified_axle_4_gear_together"/>
+      <geom class="robot0:D_Vizual" pos="-0.0145682 -0.011604 -0.0105057" quat="0.707107 -0.707107 0 0" type="mesh" rgba="0.498039 0.498039 0.498039 1" mesh="axle_4_gear_together"/>
+      <body name="finger_v2_with_motor_3" pos="0.0273528 -0.0192 0.0109" quat="0.5 -0.5 -0.5 -0.5">
+        <inertial pos="2.69799e-06 0.00969179 0.0167244" quat="0.933694 0.358071 -0.000130762 -7.74925e-06" mass="0.045" diaginertia="1.01907e-05 7.29793e-06 5.66945e-06"/>
+        <joint name="ring_mcps" pos="0 0 0" axis="0 0 1" limited="true" range="-1.5708 1.5708"/>
+        <geom class="robot0:DC_Hand" name = "g_ring_proximal" pos="0.00882103 0.0244405 0.0124337" quat="0.707107 0.707107 0 0" type="mesh" rgba="0.603922 0.14902 0.14902 1" mesh="simplified_finger_v2_with_motor"/>
+        <geom class="robot0:D_Vizual" pos="0.00882103 0.0244405 0.0124337" quat="0.707107 0.707107 0 0" type="mesh" rgba="0.603922 0.14902 0.14902 1" mesh="finger_v2_with_motor"/>
+        <body name="pip_dip_soft_parts_3" pos="-0.0101 0.0168775 0.0343571" quat="0 0.707107 0 0.707107">
+          <inertial pos="-0.00255848 -0.0100331 0.0100999" quat="0.989911 -4.92866e-07 -3.44336e-06 -0.141691" mass="0.01" diaginertia="6.06365e-07 3.6766e-07 3.64034e-07"/>
+          <joint name="ring_pip" pos="0 0 0" axis="0 0 1" limited="true" range="0 2.00713"/>
+          <geom class="robot0:DC_Hand" name = "g_ring_mediate" pos="-0.0219423 -0.00754842 0.018921" quat="0.5 -0.5 -0.5 -0.5" type="mesh" rgba="0.972549 0.529412 0.00392157 1" mesh="simplified_pip_dip_soft_parts"/>
+          <geom class="robot0:D_Vizual" pos="-0.0219423 -0.00754842 0.018921" quat="0.5 -0.5 -0.5 -0.5" type="mesh" rgba="0.972549 0.529412 0.00392157 1" mesh="pip_dip_soft_parts"/>
+          <body name="dip_tip_soft_upward_cut_3" pos="-0.00598884 -0.0202033 0.0008" quat="1 0 0 0">
+            <inertial pos="-0.00469732 -0.0118197 0.00930264" quat="0.699921 0.699494 -0.102142 -0.101911" mass="0.0125" diaginertia="1.23132e-06 9.56841e-07 3.68911e-07"/>
+            <joint name="ring_dip" pos="0 0 0" axis="0 0 1" limited="true" range="0 2.00713"/>
+            <geom class="robot0:DC_Hand" name = "g_ring_distal" pos="-0.0160787 0.0125384 0.018121" quat="0.5 -0.5 -0.5 -0.5" type="mesh" rgba="0 0.74902 1 1" mesh="simplified_dip_tip_soft_upward_cut"/>
+            <geom class="robot0:D_Vizual" pos="-0.0160787 0.0125384 0.018121" quat="0.5 -0.5 -0.5 -0.5" type="mesh" rgba="0 0.74902 1 1" mesh="dip_tip_soft_upward_cut" />
+          </body>
+        </body>
+      </body>
+    </body>
+    <body name="axle_4_gear_together_2" pos="0.0261839 -0.00324278 -0.131822" quat="0.5 -0.5 0.5 -0.5">
+      <inertial pos="0.0268697 0.00822304 0.0108747" quat="0.480986 0.529617 0.468353 0.518463" mass="0.02" diaginertia="2.8958e-07 2.53284e-07 6.82403e-08"/>
+      <joint name="pinky_mcpf" pos="0 0 0" axis="0 0 1" limited="true" range="0 1.5708"/>
+      <geom name = "g_pinky_base" pos="-0.0145682 -0.011604 -0.0105057" quat="0.707107 -0.707107 0 0" type="mesh" rgba="0.498039 0.498039 0.498039 1" mesh="simplified_axle_4_gear_together"/>
+      <geom class="robot0:D_Vizual" pos="-0.0145682 -0.011604 -0.0105057" quat="0.707107 -0.707107 0 0" type="mesh" rgba="0.498039 0.498039 0.498039 1" mesh="axle_4_gear_together"/>
+      <body name="finger_v2_with_motor_4" pos="0.0273528 -0.0192 0.0109" quat="0.5 -0.5 -0.5 -0.5">
+        <inertial pos="2.69799e-06 0.00969179 0.0167244" quat="0.933694 0.358071 -0.000130762 -7.74925e-06" mass="0.045" diaginertia="1.01907e-05 7.29793e-06 5.66945e-06"/>
+        <joint name="pinky_mcps" pos="0 0 0" axis="0 0 1" limited="true" range="-1.5708 1.5708"/>
+        <geom class="robot0:DC_Hand" name = "g_pinky_proximal" pos="0.00882103 0.0244405 0.0124337" quat="0.707107 0.707107 0 0" type="mesh" rgba="0.603922 0.14902 0.14902 1" mesh="simplified_finger_v2_with_motor"/>
+        <geom class="robot0:D_Vizual" pos="0.00882103 0.0244405 0.0124337" quat="0.707107 0.707107 0 0" type="mesh" rgba="0.603922 0.14902 0.14902 1" mesh="finger_v2_with_motor"/>
+        <body name="pip_dip_soft_parts_4" pos="-0.0101 0.0168775 0.0343571" quat="0.000735437 0.707106 0.000735437 0.707106">
+          <inertial pos="-0.00255848 -0.0100331 0.0100999" quat="0.989911 -4.92866e-07 -3.44336e-06 -0.141691" mass="0.01" diaginertia="6.06365e-07 3.6766e-07 3.64034e-07"/>
+          <joint name="pinky_pip" pos="0 0 0" axis="0 0 1" limited="true" range="0 2.00713"/>
+          <geom class="robot0:DC_Hand" name = "g_pinky_mediate" pos="-0.0219423 -0.00754842 0.018921" quat="0.5 -0.5 -0.5 -0.5" type="mesh" rgba="0.972549 0.529412 0.00392157 1" mesh="simplified_pip_dip_soft_parts"/>
+          <geom class="robot0:D_Vizual" pos="-0.0219423 -0.00754842 0.018921" quat="0.5 -0.5 -0.5 -0.5" type="mesh" rgba="0.972549 0.529412 0.00392157 1" mesh="pip_dip_soft_parts"/>
+          <body name="dip_tip_soft_upward_cut_4" pos="-0.00598884 -0.0202033 0.0008" quat="1 0 0 0">
+            <inertial pos="-0.00469732 -0.0118197 0.00930264" quat="0.699921 0.699494 -0.102142 -0.101911" mass="0.0125" diaginertia="1.23132e-06 9.56841e-07 3.68911e-07"/>
+            <joint name="pinky_dip" pos="0 0 0" axis="0 0 1" limited="true" range="0 2.00713"/>
+            <geom class="robot0:DC_Hand" name = "g_pinky_distal" pos="-0.0160787 0.0125384 0.018121" quat="0.5 -0.5 -0.5 -0.5" type="mesh" rgba="0 0.74902 1 1" mesh="simplified_dip_tip_soft_upward_cut"/>
+            <geom class="robot0:D_Vizual" pos="-0.0160787 0.0125384 0.018121" quat="0.5 -0.5 -0.5 -0.5" type="mesh" rgba="0 0.74902 1 1" mesh="dip_tip_soft_upward_cut"/>
+          </body>
+        </body>
+      </body>
+    </body>
+    <body name="no_finger_frame" pos="0.0218339 0.0211572 -0.130565" quat="0.5 0.5 -0.5 -0.5">
+      <inertial pos="-0.0178969 0.00947401 0.0102641" quat="0.351127 0.322924 0.272568 0.835546" mass="0.14" diaginertia="0.000114173 0.000109822 5.63216e-05"/>
+      <joint name="palm_4_finger" pos="0 0 0" axis="0 0 1" limited="true" range="0 1.0472"/>
+      <geom class="robot0:DC_Hand" name = "g_no_finger_frame" pos="-0.0374215 -0.00245 -0.0275" quat="0.5 -0.5 -0.5 -0.5" type="mesh" rgba="0.6 0.15 1 1" mesh="simplified_no_finger_frame"/>
+      <geom class="robot0:D_Vizual" pos="-0.0374215 -0.00245 -0.0275" quat="0.5 -0.5 -0.5 -0.5" type="mesh" rgba="0.6 0.15 1 1" mesh="no_finger_frame"/>
+      <body name="thumb_frame" pos="-0.0253903 -9.3e-05 0.0380564" quat="0.896873 0 0.442289 0">
+        <inertial pos="-0.0325159 0.0339369 -0.0188486" quat="0.246752 0.616912 -0.319951 0.675399" mass="0.23" diaginertia="0.000289467 0.000272758 0.000105642"/>
+        <joint name="palm_thumb" pos="0 0 0" axis="0 0 1" limited="true" range="0 1.22173"/>
+        <geom class="robot0:DC_Hand" name = "g_thumb_frame" pos="0.0033475 0.034859 -0.0191955" quat="0.644314 -0.644314 0.291307 0.291307" type="mesh" rgba="0.2 0.886275 0.2 1" mesh="simplified_thumb_frame"/>
+        <geom class="robot0:D_Vizual" pos="0.0033475 0.034859 -0.0191955" quat="0.644314 -0.644314 0.291307 0.291307" type="mesh" rgba="0.2 0.886275 0.2 1" mesh="thumb_frame"/>
+        <body name="axle_4_gear_together_mir_3" pos="-0.0323471 -0.001277 -0.00744747" quat="0 0 0 -1">
+          <inertial pos="0.0268697 0.00822304 0.0108753" quat="0.529617 0.480986 0.518463 0.468353" mass="0.02" diaginertia="2.8958e-07 2.53284e-07 6.82403e-08"/>
+          <joint name="thumb_mcpf" pos="0 0 0" axis="0 0 1" limited="true" range="0 1.71042"/>
+          <geom pos="-0.0149766 -0.0131324 -0.0220975" quat="0.585532 -0.585532 -0.396424 -0.396424" type="mesh" rgba="0.498039 0.498039 0.498039 1" mesh="simplified_axle_4_gear_together_mir"/>
+          <geom class="robot0:D_Vizual" pos="-0.0149766 -0.0131324 -0.0220975" quat="0.585532 -0.585532 -0.396424 -0.396424" type="mesh" rgba="0.498039 0.498039 0.498039 1" mesh="axle_4_gear_together_mir"/>
+          <body name="thumb_with_motor" pos="0.0273528 -0.0192 0.01085" quat="0.707107 -0.707107 0 0">
+            <inertial pos="0.0095102 2.32463e-06 0.0177302" quat="0.676888 -0.204887 -0.204197 0.676866" mass="0.03" diaginertia="7.09419e-06 5.32141e-06 3.97122e-06"/>
+            <joint name="thumb_mcps" pos="0 0 0" axis="0 0 1" limited="true" range="-1.5708 1.5708"/>
+            <geom class="robot0:DC_Hand" name = "g_thumb_proximal" pos="0.0264148 0.000642155 0.0305491" quat="0.707107 0.707107 0 0" type="mesh" rgba="0.603922 0.14902 0.14902 1" mesh="simplified_thumb_with_motor"/>
+            <geom class="robot0:D_Vizual" pos="0.0264148 0.000642155 0.0305491" quat="0.707107 0.707107 0 0" type="mesh" rgba="0.603922 0.14902 0.14902 1" mesh="thumb_with_motor"/>
+            <body name="thumb_tip_hard" pos="0.0178775 0.014 0.0338463" quat="0.707099 0.707099 -0.00334794 0.00334794">
+              <inertial pos="0.0161602 -0.00246251 0.0139981" quat="0.527037 0.527262 0.471338 0.47124" mass="0.015" diaginertia="1.99723e-06 1.35408e-06 8.68485e-07"/>
+              <joint name="thumb_ip" pos="0 0 0" axis="0 0 1" limited="true" range="0 1.91986"/>
+              <geom class="robot0:DC_Hand" name = "g_thumb_distal" pos="0.00860729 -0.00329535 0.0133578" quat="1 0 0 0" type="mesh" rgba="0 0.74902 1 1" mesh="simplified_thumb_tip_hard"/>
+              <geom class="robot0:D_Vizual" pos="0.00860729 -0.00329535 0.0133578" quat="1 0 0 0" type="mesh" rgba="0 0.74902 1 1" mesh="thumb_tip_hard"/>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </body>
+  </worldbody>
+
+
+  <tendon>
+      <fixed name="t_pinky" limited="true" range="-0.001 0.001" stiffness = "25" damping = "0.01">
+          <joint joint="pinky_dip" coef="0.00705"></joint>
+          <joint joint="pinky_pip" coef="-0.00805"></joint>
+      </fixed>
+      <fixed name="t_ring" limited="true" range="-0.001 0.001">
+          <joint joint="ring_dip" coef="0.00705"></joint>
+          <joint joint="ring_pip" coef="-0.00805"></joint>
+      </fixed>
+      <fixed name="t_middle" limited="true" range="-0.001 0.001">
+          <joint joint="middle_dip" coef="0.00705"></joint>
+          <joint joint="middle_pip" coef="-0.00805"></joint>
+      </fixed>
+      <fixed name="t_index" limited="true" range="-0.001 0.001">
+          <joint joint="index_dip" coef="0.00705"></joint>
+          <joint joint="index_pip" coef="-0.00805"></joint>
+      </fixed>
+  </tendon>
+
+
+
+  <actuator>
+    <position name="a_index_mcpf" class="robot0:asset_class" user="2038" joint="index_mcpf" kp="5" ctrlrange="0 1.5708" forcerange="-1.0 1.0"></position>
+    <position name="a_index_mcps" class="robot0:asset_class" user="2038" joint="index_mcps" kp="2" ctrlrange="-1.5708 1.5708" forcerange="-1.0 1.0"></position>
+    <position name="a_index_pip" class="robot0:asset_class" user="2038" joint="index_pip" kp="1.0" ctrlrange="0 2.00713" forcerange="-10 10"></position>
+    
+    <position name="a_middle_mcpf" class="robot0:asset_class" user="2038" joint="middle_mcpf" kp="5" ctrlrange="0 1.5708" forcerange="-1.0 1.0"></position>
+    <position name="a_middle_mcps" class="robot0:asset_class" user="2038" joint="middle_mcps" kp="2" ctrlrange="-1.5708 1.5708" forcerange="-1.0 1.0"></position>
+    <position name="a_middle_pip" class="robot0:asset_class" user="2038" joint="middle_pip" kp="1.0" ctrlrange="0 2.00713" forcerange="-10 10"></position>
+
+    <position name="a_ring_mcpf" class="robot0:asset_class" user="2038" joint="ring_mcpf" kp="5" ctrlrange="0 1.5708" forcerange="-1.0 1.0"></position>
+    <position name="a_ring_mcps" class="robot0:asset_class" user="2038" joint="ring_mcps" kp="2" ctrlrange="-1.5708 1.5708" forcerange="-1.0 1.0"></position>
+    <position name="a_ring_pip" class="robot0:asset_class" user="2038" joint="ring_pip" kp="1.0" ctrlrange="0 2.00713" forcerange="-10 10"></position>
+
+    <position name="a_pinky_mcpf" class="robot0:asset_class" user="2038" joint="pinky_mcpf" kp="5" ctrlrange="0 1.5708" forcerange="-1.0 1.0"></position>
+    <position name="a_pinky_mcps" class="robot0:asset_class" user="2038" joint="pinky_mcps" kp="2" ctrlrange="-1.5708 1.5708" forcerange="-1.0 1.0"></position>
+    <position name="a_pinky_pip" class="robot0:asset_class" user="2038" joint="pinky_pip" kp="1.0" ctrlrange="0 2.00713" forcerange="-10 10"></position>
+
+    <position name="a_thumb_mcpf" class="robot0:asset_class" user="2038" joint="thumb_mcpf" kp="5" ctrlrange="0 1.5708" forcerange="-1.0 1.0"></position>
+    <position name="a_thumb_mcps" class="robot0:asset_class" user="2038" joint="thumb_mcps" kp="2" ctrlrange="-1.5708 1.5708" forcerange="-1.0 1.0"></position>
+    <position name="a_thumb_pip" class="robot0:asset_class" user="2038" joint="thumb_pip" kp="1.0" ctrlrange="0 2.00713" forcerange="-10 10"></position>
+
+    <position name="a_palm_thumb" class="robot0:asset_class" user="2038" joint="palm_thumb" kp="50" ctrlrange="0 1.22173" forcerange="-47.85 47.85"></position>
+    <position name="a_palm_4_finger" class="robot0:asset_class" user="2038" joint="palm_4_finger" kp="50" ctrlrange="0 1.0472" forcerange="-100 100"></position> 
+  </actuator>
+</mujoco>

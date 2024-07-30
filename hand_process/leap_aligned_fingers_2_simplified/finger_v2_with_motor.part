@@ -1,0 +1,13 @@
+{
+    "configuration": "default",
+    "documentId": "f04a7f2dddfb1a361e7056c8",
+    "documentMicroversion": "f02f881f1ed9d04b085d7519",
+    "elementId": "a3a71e4635f55f8e58e392d7",
+    "fullConfiguration": "default",
+    "id": "MeoS+B87NLnxGOY9R",
+    "isStandardContent": false,
+    "name": "finger_v2_with_motor <4>",
+    "partId": "JFD",
+    "suppressed": false,
+    "type": "Part"
+}
